@@ -6,6 +6,7 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("book")
+@RolesAllowed({"user"})
 @Produces(MediaType.APPLICATION_JSON)
 public class BookResource {
 
@@ -41,6 +43,7 @@ public class BookResource {
      */
     @GET
     @Path("pageSize")
+    @Produces(MediaType.TEXT_PLAIN)
     public Integer getPageSize() {
         return pageSize;
     }
@@ -54,6 +57,7 @@ public class BookResource {
     @POST
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public String create(Book book) {
         if (book.getId() == null) return "ID无效";
         if (Book.findById(book.getId()) != null) return "条码号重复";
@@ -70,8 +74,10 @@ public class BookResource {
      */
     @GET
     @Path("title/page")
+    @Produces(MediaType.TEXT_PLAIN)
     public Integer getPageByTitle(@QueryParam("title") String title,
                                   @QueryParam("mode") String mode) {
+        if (title == null) return null;
         PanacheQuery<Book> query = service.getByTitle(title, mode);
         query.page(Page.ofSize(pageSize));
         return query.pageCount();
@@ -89,6 +95,7 @@ public class BookResource {
     public List<Book> getByTitle(@QueryParam("title") String title,
                                  @QueryParam("mode") String mode,
                                  @QueryParam("page") Integer page) {
+        if (title == null) return null;
         if (page < 1) return null;
         PanacheQuery<Book> query = service.getByTitle(title, mode);
         return query.page(Page.of(page - 1, pageSize)).list();
@@ -102,7 +109,9 @@ public class BookResource {
      */
     @GET
     @Path("author/page")
+    @Produces(MediaType.TEXT_PLAIN)
     public Integer getPageByAuthor(@QueryParam("author") String author) {
+        if (author == null) return null;
         PanacheQuery<Book> query = service.getByAuthor(author);
         query.page(Page.ofSize(pageSize));
         return query.pageCount();
@@ -119,6 +128,7 @@ public class BookResource {
     @Path("author")
     public List<Book> getByAuthor(@QueryParam("author") String author,
                                   @QueryParam("page") Integer page) {
+        if (author == null) return null;
         if (page < 1) return null;
         PanacheQuery<Book> query = service.getByAuthor(author);
         return query.page(Page.of(page - 1, pageSize)).list();
