@@ -1,5 +1,62 @@
 # library-demo-quarkus Project
 
+- Java版本： OpenJDK 17
+
+- 框架版本：Quarkus 2.9.2
+
+- maven版本：3.8.4
+
+  - 实测使用腾讯云maven可正常使用
+
+- 默认端口：8080
+
+- 启动命令：
+
+  ```bash
+  mvn compile quarkus:dev
+  ```
+
+- 数据库：dev模式下，使用h2数据库
+
+- swagger地址：http://localhost:8080/q/swagger-ui
+
+- 前端：使用quasar v2（Vue3）开发
+
+- 默认管理员：
+
+  - 用户名：admin
+  - 密码：admin
+
+
+
+## 关于数据导入
+
+在进入界面后，可以使用左侧工具栏进入“图书管理”页面
+
+![image-20220614012715357](README.assets/image-20220614012715357.png)
+
+接下来，点击右上角的上传Excel可以导入Excel中的图书数据
+
+![image-20220614012746674](README.assets/image-20220614012746674.png)
+
+导入后，点击更新图书数据，这些数据就会存入数据库
+
+![image-20220614012835497](README.assets/image-20220614012835497.png)
+
+回到搜索页，就可以正常搜索了
+
+![image-20220614012857728](README.assets/image-20220614012857728.png)
+
+
+
+
+
+
+
+
+
+以下是框架生成时自带的说明文件
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .

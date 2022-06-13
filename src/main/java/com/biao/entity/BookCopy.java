@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 public class BookCopy extends PanacheEntity {
 
+    String bookID;                  // 所属图书的条码号
     String shelfID;                 // 所在书架的位置
 
     String borrower;                // 借阅人
