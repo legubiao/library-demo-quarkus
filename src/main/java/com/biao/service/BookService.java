@@ -3,12 +3,15 @@ package com.biao.service;
 import com.biao.entity.Book;
 import com.biao.entity.BookCopy;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 @ApplicationScoped
 public class BookService {
+
+    private static final Logger log = Logger.getLogger(BookService.class);
 
     public PanacheQuery<Book> getByTitle(String title, String mode) {
         return switch (mode) {
@@ -36,6 +39,7 @@ public class BookService {
             book.persist();
             count++;
         }
+        log.info("successfully create" + count + " book, total import count is " + bookList.size());
         return count;
     }
 
@@ -55,6 +59,7 @@ public class BookService {
             copy.persist();
             count++;
         }
+        log.info("successfully create" + count + " copies, total book count is " + bookList.size());
         return count;
     }
 }
